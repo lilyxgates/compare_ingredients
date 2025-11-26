@@ -35,17 +35,17 @@ print(f"Saving Product 2 as: '{product_2_name}'")
 # Input ingredients for `Product 1`
 product_1_ingr_input = str(input(f"\nList the ingredients for {product_1_name} (comma-seperated):\n"))
 product_1_ingr_list = product_1_ingr_input.lower().replace(", ", ",").split(",")
-print(f"Confirming ingredients for {product_1_name} as:\n{product_1_ingr_list}")
+print(f"\nConfirming ingredients for {product_1_name} as:\n{product_1_ingr_list}")
 
 # Input ingredients for `Product 2`
 product_2_ingr_input = str(input(f"\nList the ingredients for {product_2_name} (comma-seperated):\n"))
 product_2_ingr_list = product_2_ingr_input.lower().replace(", ", ",").split(",")
-print(f"Confirming ingredients for {product_2_name} as:\n{product_2_ingr_list}")
+print(f"\nConfirming ingredients for {product_2_name} as:\n{product_2_ingr_list}\n")
 
 # Loading statement
-print("==========================================================================")
-print(f"Comparing ingredients for {product_1_name} and {product_2_name}")
-print("==========================================================================")
+print("="*60)
+print(f"Comparing UNIQUE ingredients for {product_1_name} and {product_2_name}")
+print("="*60)
 
 # -------------------------------------------
 # Returns unique ingredients
@@ -56,20 +56,29 @@ unique_ingr_product_1 = list(set(product_1_ingr_list) - set(product_2_ingr_list)
 unique_ingr_product_2 = list(set(product_2_ingr_list) - set(product_1_ingr_list))
 all_ingredients = set(product_1_ingr_list) | set(product_2_ingr_list)
 
-print(f"ONLY {product_1_name}:\n{unique_ingr_product_1}\n")
+print(f"\nIngredients in ONLY {product_1_name}:")
+print(f"{unique_ingr_product_1}\n")
 
-print(f"ONLY {product_2_name}:\n{unique_ingr_product_2}")
+print("-"*60)
+
+print(f"\nIngredients in ONLY {product_2_name}:")
+print(f"{unique_ingr_product_2}\n")
 
 # -------------------------------------------
 # Returns shared ingredients
 # -------------------------------------------
 
-print("-----------------------------------------------------")
-
 same_ingr = set(product_1_ingr_list) & set(product_2_ingr_list)
 
+# Loading statement
+print("="*60)
+print(f"Comparing DUPLICATE ingredients for {product_1_name} and {product_2_name}")
+print("="*60)
+
 # Return unsorted shared ingredients
-print(f"BOTH {product_1_name} and {product_2_name}:\n{list(same_ingr)}")
+print(f"\nIngredients in BOTH {product_1_name} and {product_2_name}:")
+print(f"{list(same_ingr)}\n")
+
 
 # -------------------------------------------
 # Returns the index and percentile of the shared ingredients
@@ -118,20 +127,31 @@ for ingr in same_ingr:
 # Create final combined dataframe
 df_combined = pd.DataFrame(combined).sort_values(by=f"{product_1_snake}_idx").reset_index(drop=True)
 
-print(f"\n'{product_1_name}' and '{product_2_name}'\nIndex and Relative Percentile of Shared Ingredients\n")
-print(df_combined)
+# Loading statement
+print("="*60)
+print("Index & Relative Percentile of Shared Ingredients:")
+print("="*60)
 
+print("")
+print(df_combined)
+print("")
 
 # ===========================================
-# Creating Visualizationsfor Results
+# Creating Visualizations for Results
 # ===========================================
 
 # Loading statement
-print("==========================================================================")
-print(f"Creating visualizations for {product_1_name} and {product_2_name}")
-print("==========================================================================")
+print("="*60)
+print("Creating Visualizations for Shared Ingredient(s)")
+print("="*60)
+
 
 # ---- Horizontal Bar Chart ----
+
+print("")
+print("1. Horizontal Bar Chart")
+print("")
+
 plt.figure(figsize=(10, 5))
 bar_width = 0.4
 y_positions = range(len(df_combined))
@@ -161,6 +181,10 @@ plt.show()
 
 # ---- Vertical Bar Chart ----
 
+print("")
+print("2. Veritcal Bar Chart")
+print("")
+
 plt.figure(figsize=(10, 5))
 bar_width = 0.4
 x_positions = range(len(df_combined))
@@ -188,6 +212,11 @@ plt.tight_layout()
 plt.show()
 
 # ---- Scatter Plot ----
+
+print("")
+print("3. Scatter Plot")
+print("")
+
 plt.figure(figsize=(6, 6))
 plt.scatter(
     df_combined[f"{product_1_snake}_perct"], 
@@ -214,6 +243,11 @@ plt.tight_layout()
 plt.show()
 
 # ---- Heatmap ----
+
+print("")
+print("4.Heat Map")
+print("")
+
 heat_df = df_combined.set_index("ingredient")[
     [f"{product_1_snake}_perct", f"{product_2_snake}_perct"]
 ]
@@ -228,7 +262,18 @@ plt.title("Relative Percentile of Shared Ingredients")
 plt.tight_layout()
 plt.show()
 
+# Loading statement
+print("="*60)
+print("Comparison Complete")
+print("="*60)
+
 # TODO
+
+# CODING
+# - Deal with parenthesis (r.strip and l.strip on parenthesis), then save into tuples
+# - Sort and display a list of ingredients by common shared category (e.g, waxes, oils etc.)
+
+# VIZUALIZATIONS
 # - Refine data visualizations
 # - Save the dataframe as CSV and save all data visualizations
 # - Create folders for the output files
